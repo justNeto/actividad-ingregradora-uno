@@ -7,7 +7,7 @@
 // Include headers and libraries
 #include <iostream>
 #include <fstream>
-#include <ctime>
+#include <chrono>
 
 bool debug;
 
@@ -52,11 +52,43 @@ void setDebug()
 	}
 }
 
+void genPattern(int pattern_length, std::string name)
+{
+	std::ofstream file;
+	unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+	std::srand(seed); // sets seed
+
+	int max_val = 16; // size of the gen_word dictionary
+	char gen_word[max_val] = {'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+	file.open(name);
+
+	for (int i = 0; i < pattern_length; i++)
+	{
+		int select_char = (std::rand() % max_val);
+
+		if (debug) std::cout << "Random index: " << select_char << "\n";
+
+		if ((gen_word[select_char] == '\n') && (debug))
+		{
+			std::cout << "Value in dict: New line made \n";
+		}
+		else if (debug)
+		{
+			std::cout << "Value in dict: [" << gen_word[select_char] << "]\n";
+		}
+
+		file << gen_word[select_char];
+	}
+
+	file.close();
+}
+
 void genText(int text_length, std::string name)
 {
 	std::ofstream file;
-
-	std::srand(time(NULL)); // sets seed
+	unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+	std::srand(seed); // sets seed
 
 	int max_val = 17; // size of the gen_word dictionary
 	char gen_word[max_val] = {'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\n'};
@@ -87,13 +119,14 @@ void genText(int text_length, std::string name)
 // Main function
 int main()
 {
-
 	int length;
+
+	std::cout << "Length of the documents randomly generated documents\n";
 
 	while (true)
 	{
 
-		if (!(std::cin >> row_size))
+		if (!(std::cin >> length))
 		{
 			std::cout << "Error. Please enter an int number.\n";
 			std::cin.clear();
@@ -102,13 +135,15 @@ int main()
 			continue;
 		}
 
+		break;
+
 	}
 
 	setDebug(); // setting debug
 
 	genText(length, "transmision1.txt");
 	genText(length, "transmision2.txt");
-	genText(10, "mcode1.txt");
-	genText(10, "mcode2.txt");
-	genText(10, "mcode3.txt");
+	genPattern(10, "mcode1.txt");
+	genPattern(10, "mcode2.txt");
+	genPattern(10, "mcode3.txt");
 }
