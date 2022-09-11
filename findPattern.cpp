@@ -3,11 +3,13 @@
 
 bool verbose;
 
+// Prints the current development version
 void prtVersion()
 {
 	std::cout << "1.2.0\n";
 }
 
+// Prints the help usage of the program
 void prtHelp()
 {
 	std::cout << "Usage: findPattern [OPTIONS] ... [FILE] ... \n\n";
@@ -57,6 +59,7 @@ int main(int argc, char ** argv)
 
 	// Some defaults
 	int default_text_size = 10000;
+	int default_pattern_size = 10;
 
 	if (argc == 1) // no opts passed, program was just executed
 	{
@@ -66,7 +69,7 @@ int main(int argc, char ** argv)
 
 	int aux = 1;
 
-	// Loop to get opts
+	// Loop to get the correct opts for the program
 	while (aux != argc)
 	{
 		if ((file_opt == true) && (files_inputed == false))  // if file_opt active and files_inputed still false
@@ -192,14 +195,14 @@ int main(int argc, char ** argv)
 		exit(1);
 	}
 
-	// Checking for the opts that were recovered
+	// Checking all the opts
 	if (simulation == true)
 	{
 		if (verbose) std::cout << "| --- [Simulation mode activated] --- | \n";
 		if (verbose) std::cout << "In simulation mode, default values will be used for file length and pattern length.\n";
-
 		if (verbose) std::cout << "::- Creating files\n";
 
+		// Creating default files
 		genText(20000, "transmission1.txt");
 		genText(20000, "transmission2.txt");
 		genPattern(5, "mcode1.txt");
@@ -223,7 +226,7 @@ int main(int argc, char ** argv)
 		exit(0);
 	}
 
-	// Code to generate files
+	// Code to generate random files
 	if (gen_file_opt)
 	{
 		if (verbose)
@@ -248,9 +251,8 @@ int main(int argc, char ** argv)
 
 			for (int i = 1; i < std::stoi(gen_files[0]) + 1; i++)
 			{
-				std::string aux = "transmission";
-				std::string aux2 = std::to_string(i);
-				std::string result = aux + aux2 + ".txt";
+				std::string aux = std::to_string(i);
+				std::string result = "transmission" + aux + ".txt";
 
 				genText(default_text_size, result);
 			}
@@ -263,17 +265,17 @@ int main(int argc, char ** argv)
 
 			for (int i = 1; i < std::stoi(gen_files[0]) + 1; i++)
 			{
-				std::string aux = "transmission";
-				std::string aux2 = std::to_string(i);
-				std::string result = aux + aux2 + ".txt";
+				std::string aux = std::to_string(i);
+				std::string result = "transmission" + aux + ".txt";
 
-				int aux3 = std::stoi(gen_files[1]);
+				int aux2 = std::stoi(gen_files[1]);
 
-				genText(aux3, result);
+				genText(aux2, result);
 			}
 		}
 	}
 
+	// Code to solve the problems with existing files
 	if (file_opt)
 	{
 		if (verbose)
@@ -285,27 +287,59 @@ int main(int argc, char ** argv)
 		}
 	}
 
+	// Code to generate random patterns
 	if (gen_pattern_opt)
 	{
+		std::cout << "Generating patterns\n";
+
 		if (verbose)
 		{
 			if (gen_patterns.empty())
 			{
 				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
 			}
-			else
+		}
+
+		// After inputing opts process them
+		if (gen_patterns.size() > 2)
+		{
+			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			exit(1);
+		}
+
+		if (gen_patterns.size() == 1) // if default is only one, then only number of files selected. Thus, using default size.
+		{
+			// Generate all the files with default value
+			if (verbose) std::cout << "Generating " << gen_patterns[0] << " files.\n";
+
+			for (int i = 1; i < std::stoi(gen_patterns[0]) + 1; i++)
 			{
-				std::cout << "\n::-Will generate this patterns: \n";
+				std::string aux = std::to_string(i);
+				std::string result = "mcode" + aux + ".txt";
 
-				for (auto const &names : gen_patterns)
-				{
-					std::cout << names << "\n";
-				}
+				genPattern(default_pattern_size, result);
 			}
+		}
 
+		if (gen_patterns.size() == 2) // if default is only one, then only number of files selected. Thus, using default size.
+		{
+			std::cout << "Inside the gen_patterns\n";
+			// Generate all the files with default value
+			if (verbose) std::cout << "Generating " << gen_patterns[0] << " files of length " << gen_patterns[1] << ".\n"; // number of files
+
+			for (int i = 1; i < std::stoi(gen_patterns[0]) + 1; i++)
+			{
+				std::string aux = std::to_string(i);
+				std::string result = "mcode" + aux + ".txt";
+
+				int aux2 = std::stoi(gen_patterns[1]);
+
+				genPattern(aux2, result);
+			}
 		}
 	}
 
+	// Code to solve the problems with existing patterns
 	if (pattern_opt)
 	{
 		if (verbose)
