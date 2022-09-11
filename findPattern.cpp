@@ -16,10 +16,10 @@ void prtHelp()
 
 	std::cout << "Finds a certain pattern on a file and points at the index it can be found.\n\n";
 	std::cout << "Use the following options for searching patterns in files.\n";
-      std::cout << "  -f, --file						search file for the pattern. Can specify multiple files.\n";
-      std::cout << "  -p, --pattern						file with the pattern. Can specify multiple patterns.\n";
-      std::cout << "  -v, --verbose						prints the program specifics in runtime.\n";
-      std::cout << "  -s, --simulate					creates three random files in current directory and searches for two random patterns.\n\n";
+	std::cout << "  -f, --file						search file for the pattern. Can specify multiple files.\n";
+	std::cout << "  -p, --pattern						file with the pattern. Can specify multiple patterns.\n";
+	std::cout << "  -v, --verbose						prints the program specifics in runtime.\n";
+	std::cout << "  -s, --simulate					creates three random files in current directory and searches for two random patterns.\n\n";
 
 	std::cout << "Use the following options for generating test random files and patterns.\n";
 	std::cout << "  -gf, --generate-files <N> <M>\n";
@@ -30,7 +30,7 @@ void prtHelp()
 	std::cout << "       Generate a number of <N> random patterns with a length of <M>. They will be automatically as mcode<0...N>.\n\n";
 
 	std::cout << "  -h, --help						shows this help menu and exit.\n";
-      std::cout << "  --version						displays current version of script.\n";
+	std::cout << "  --version						displays current version of script.\n";
 }
 
 // Argc: number of arguments including the program name
