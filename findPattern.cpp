@@ -66,6 +66,7 @@ int main(int argc, char ** argv)
 
 	int aux = 1;
 
+	// Loop to get opts
 	while (aux != argc)
 	{
 		if ((file_opt == true) && (files_inputed == false))  // if file_opt active and files_inputed still false
@@ -191,6 +192,7 @@ int main(int argc, char ** argv)
 		exit(1);
 	}
 
+	// Checking for the opts that were recovered
 	if (simulation == true)
 	{
 		if (verbose) std::cout << "| --- [Simulation mode activated] --- | \n";
@@ -221,6 +223,7 @@ int main(int argc, char ** argv)
 		exit(0);
 	}
 
+	// Code to generate files
 	if (gen_file_opt)
 	{
 		if (verbose)
@@ -280,8 +283,6 @@ int main(int argc, char ** argv)
 				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
 			}
 		}
-
-
 	}
 
 	if (gen_pattern_opt)
