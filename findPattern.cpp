@@ -37,17 +37,17 @@ int main(int argc, char ** argv)
 	std::vector<std::string> gen_files; // create files
 	std::vector<std::string> gen_patterns; // create patterns
 
-	// Boolean to enter input via the terminal
-	bool files_generated = false; // files were already generated
-	bool files_inputed = false; // files already were inputted
-	bool patterns_inputed = false; // patterns already were inputted
-	bool patterns_generated = false; // patterns were already generated
+	// Opts
+	bool file_opt = false;
+	bool pattern_opt = false;
+	bool gen_file_opt = false;
+	bool gen_pattern_opt = false;
 
-	bool input_files = false; // inputing files
-	bool input_patterns = false; // inputting patterns
-
-	bool generate_files = false; // inputting file names to generate
-	bool generate_patterns = false; // inputting pattern names to generate
+	// Control vars
+	bool patterns_inputed = false;
+	bool patterns_generated = false;
+	bool files_generated = false;
+	bool files_inputed = false;
 
 	bool simulation = false; // inputting patterns
 
@@ -57,154 +57,123 @@ int main(int argc, char ** argv)
 		exit(1);
 	}
 
-	for (int i = 1; i < argc; i++)
+	int aux = 1;
+
+	while (aux != argc)
 	{
-
-		if (verbose)
+		if ((file_opt == true) && (files_inputed == false))  // if file_opt active and files_inputed still false
 		{
-			// Print current working option
-			if (input_files == true) // if inputing files then pass them to function to pass patterns.
+			// New opt in argv[aux] detected
+			if (argv[aux][0] == '-')
 			{
-				std::cout << "Option inputting files for solution is working\n";
-			}
-			else if (input_patterns == true)
-			{
-				std::cout << "Option inputting patterns for solution is working\n";
-			}
-			if (generate_files == true) // generating files
-			{
-				std::cout << "Option generating files for solution is working\n";
-			}
-			else if (generate_patterns == true) // generating patterns
-			{
-				std::cout << "Option generating patterns for solution is working\n";
-			}
-		}
-
-		if (input_files == true) // if inputing files then pass them to function to pass patterns.
-		{
-			files_inputed = true; // will no longer be able to use this option
-
-			if (argv[i][0] == std::string("-"))
-			{
-				std::cout << "Another option will be used. Exiting current one";
+				files_inputed = true; // can no longer add into this opt
 				continue;
 			}
-			else
-			{
-				files_inputed = true; // will no longer be able to add more inputed files
-				files.push_back(argv[i]);
-				continue;
-			}
-		}
-		else if (input_patterns == true)
-		{
-			patterns_inputed = true;
-			patterns.push_back(argv[i]);
+
+			files.push_back(argv[aux]);
+			aux++;
+
 			continue;
 		}
 
-		if (generate_files == true) // generating files
+		if ((pattern_opt == true) && (patterns_inputed == false))  // if file_opt active and files_inputed still false
 		{
-			files_generated = true;
-			gen_files.push_back(argv[i]);
+			if (argv[aux][0] == '-')
+			{
+				patterns_inputed = true; // can no longer add into this opt
+				continue;
+			}
+
+			patterns.push_back(argv[aux]);
+			aux++;
+
 			continue;
 		}
-		else if (generate_patterns == true) // generating patterns
+
+		if ((gen_file_opt == true) && (files_generated == false))  // if file_opt active and files_inputed still false
 		{
-			patterns_generated = true;
-			gen_patterns.push_back(argv[i]);
+			if (argv[aux][0] == '-')
+			{
+				files_generated = true;
+				continue;
+			}
+
+			gen_files.push_back(argv[aux]);
+			aux++;
+
+			continue;
+		}
+
+		if ((gen_pattern_opt == true) && (patterns_generated == false))  // if file_opt active and files_inputed still false
+		{
+			if (argv[aux][0] == '-')
+			{
+				patterns_generated = true;
+				continue;
+			}
+
+			gen_patterns.push_back(argv[aux]);
+			aux++;
+
 			continue;
 		}
 
 		// Generate new files of random characters
-		if ((argv[i] == std::string("-gf")) || (argv[i] == std::string("--generate-files")))
+		if ((argv[aux] == std::string("-gf")) || (argv[aux] == std::string("--generate-files")))
 	      {
-			if (files_generated == true)
-			{
-				std::cout << "Files were already generated. Cannot generate more files.\n";
-				break;
-			}
-
-			generate_files = true;
+			gen_file_opt = true; // selects the option to work with
+			aux++;
 			continue;
 	      }
 
 		// Generate new files of random patterns
-		if ((argv[i] == std::string("-gp")) || (argv[i] == std::string("--generate-patterns")))
+		if ((argv[aux] == std::string("-gp")) || (argv[aux] == std::string("--generate-patterns")))
 	      {
-			if (patterns_generated == true)
-			{
-				std::cout << "Patterns were already generated. Cannot generate more files.\n";
-				break;
-			}
-
-			generate_patterns = true;
+			gen_pattern_opt = true; // selects the option to work with
+			aux++;
 			continue;
 	      }
 
 		// Use files to solve the problems
-		if ((argv[i] == std::string("-f")) || (argv[i] == std::string("--file")))
+		if ((argv[aux] == std::string("-f")) || (argv[aux] == std::string("--file")))
 	      {
-			if (files_inputed == true)
-			{
-				std::cout << "Files were already inputted. Cannot add more files.\n";
-				break;
-			}
-
-		      input_patterns = false;
-	            input_files = true;
-
+	            file_opt = true;
+			aux++;
 		      continue;
 	      }
 
 		// Use patterns to solve the problems
-	      if ((argv[i] == std::string("-p")) || (argv[i] == std::string("--pattern"))) // if file options selected
+	      if ((argv[aux] == std::string("-p")) || (argv[aux] == std::string("--pattern"))) // if file options selected
 	      {
-			if (patterns_inputed == true)
-			{
-				std::cout << "Patterns were already inputted. Cannot add more patterns.\n";
-				break;
-			}
-
-		      input_files = false;
-		      input_patterns = true;
-
+		      pattern_opt = false; // selects the option to work with
+			aux++;
 		      continue;
 	      }
 
 		// Start simulation mode
-		if ((argv[i] == std::string("-s")) || (argv[i] == std::string("--simulate")))
+		if ((argv[aux] == std::string("-s")) || (argv[aux] == std::string("--simulate")))
 	      {
 			simulation = true; //automatically ignore any other commands and go straight to simulation
+			aux++;
 			break;
 	      }
 
 		// Activate verbose mode
-	      if ((argv[i] == std::string("-v")) || (argv[i] == std::string("--verbose"))) // if file options selected
+	      if ((argv[aux] == std::string("-v")) || (argv[aux] == std::string("--verbose"))) // if file options selected
 	      {
 			verbose = true;
-
-			if (input_files == true) // if you were adding files
-			{
-				files_inputed = true; // files are already added
-			}
-			else if (input_patterns == true)
-			{
-				patterns_inputed = true; // patterns already added
-			}
-
+			aux++;
 			continue;
 	      }
 
 		// Show current version of proyect
-	      if (argv[i] == std::string ("--version")) // if file options selected
+	      if (argv[aux] == std::string ("--version")) // if file options selected
 	      {
 			prtVersion();
 		      exit(0);
 	      }
 
-	      if ((argv[i] == std::string ("-h")) || (argv[i] == std::string("--help"))) // if file options selected
+	      if ((argv[aux] == std::string ("-h")) || (argv[aux] == std::string("--help"))) // if file options selected
 	      {
 			prtHelp();
 			exit(0);
@@ -245,56 +214,86 @@ int main(int argc, char ** argv)
 		exit(0);
 	}
 
-	if (files_generated) //
+	if (gen_file_opt)
 	{
 		if (verbose)
 		{
-			std::cout << "Will generate this files: \n";
-
-			for (auto const &names : gen_files)
+			if (gen_files.empty())
 			{
-				std::cout << names << "\n";
+				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			}
+			else
+			{
+				std::cout << "\n::-Will generate this files: \n";
+
+				for (auto const &names : gen_files)
+				{
+					std::cout << names << "\n";
+				}
 			}
 		}
 	}
 
-	if (files_inputed)
+	if (file_opt)
 	{
 		if (verbose)
 		{
-			std::cout << "Will use this files to find a solution: \n";
-
-			for (auto const &names : files)
+			if (files.empty())
 			{
-				std::cout << names << "\n";
+				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
 			}
+			else
+			{
+				std::cout << "\n::-Will use this files to find a solution: \n";
+
+				for (auto const &names : files)
+				{
+					std::cout << names << "\n";
+				}
+			}
+
+
 		}
 	}
 
-	if (patterns_generated)
+	if (gen_pattern_opt)
 	{
 		if (verbose)
 		{
-			std::cout << "Will generate this patterns: \n";
-
-			for (auto const &names : gen_patterns)
+			if (gen_patterns.empty())
 			{
-				std::cout << names << "\n";
+				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
 			}
+			else
+			{
+				std::cout << "\n::-Will generate this patterns: \n";
+
+				for (auto const &names : gen_patterns)
+				{
+					std::cout << names << "\n";
+				}
+			}
+
 		}
 	}
 
-	if (patterns_inputed)
+	if (pattern_opt)
 	{
 		if (verbose)
 		{
-			std::cout << "Will use this patterns to find solution: \n";
-
-			for (auto const &names : patterns)
+			if (patterns.empty())
 			{
-				std::cout << names << "\n";
+				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			}
+			else
+			{
+				std::cout << "\n::-Will use this patterns to find solution: \n";
+
+				for (auto const &names : patterns)
+				{
+					std::cout << names << "\n";
+				}
 			}
 		}
 	}
-
 }
