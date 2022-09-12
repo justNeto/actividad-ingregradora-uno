@@ -6,29 +6,35 @@ bool verbose;
 // Prints the current development version
 void prtVersion()
 {
-	std::cout << "1.2.0\n";
+	std::cout << "2.1.0\n";
 }
 
 // Prints the help usage of the program
 void prtHelp()
 {
-	std::cout << "Usage: findPattern [OPTIONS] ... [FILE] ... \n\n";
+	std::cout << "Usage: firstProject [OPTIONS] ... [FILE] ... \n\n";
 
-	std::cout << "Finds a certain pattern on a file and points at the index it can be found.\n\n";
-	std::cout << "Use the following options for searching patterns in files.\n";
-	std::cout << "  -f, --file						search file for the pattern. Can specify multiple files.\n";
-	std::cout << "  -p, --pattern						file with the pattern. Can specify multiple patterns.\n";
-	std::cout << "  -v, --verbose						prints the program specifics in runtime.\n";
-	std::cout << "  -s, --simulate					creates three random files in current directory and searches for two random patterns.\n\n";
-
-	std::cout << "Use the following options for generating test random files and patterns.\n";
+	std::cout << "Use the following options for generating test random files and patterns.\n\n";
 	std::cout << "  -gf, --generate-files <N> <M>\n";
 	std::cout << "       Generate a number of <N> random files with a length of <M>. They will be named automatically as transmission<0..N>.\n";
 	std::cout << "       If no <M> value selected, default file size of length 10000 will be used.\n\n";
-
 	std::cout << "  -gp, --generate-patterns <N> <M>\n";
-	std::cout << "       Generate a number of <N> random patterns with a length of <M>. They will be automatically as mcode<0...N>.\n\n";
+	std::cout << "       Generate a number of <N> random patterns with a length of <M>. They will be automatically as mcode<0...N>.\n";
+	std::cout << "       If no <M> value selected, default file size of length 10 will be used.\n\n";
 
+	std::cout << ":: < First problem > :: \n";
+	std::cout << "Use the following options for searching patterns in files.\n";
+	std::cout << "  -f, --file FILE1, FILE2 ...\n";
+	std::cout << "       Specify the files that will be used to find a pattern. -f or --file option must be used along this one.\n\n";
+
+	std::cout << "  -p, --pattern	FILE1, FILE2 ...\n";
+	std::cout << "       Specify the pattern files that will be used. -p or --pattern option must be used along this one.\n\n";
+
+	std::cout << ":: < Simulation mode > :: \n";
+	std::cout << "  -s, --simulate					Creates three random files in current directory and solves the problems using them.\n\n";
+
+	std::cout << ":: < Other opts > :: \n";
+	std::cout << "  -v, --verbose						prints the program specifics in runtime.\n";
 	std::cout << "  -h, --help						shows this help menu and exit.\n";
 	std::cout << "  --version						displays current version of script.\n";
 }
