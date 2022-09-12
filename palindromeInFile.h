@@ -138,6 +138,7 @@ void detectPalindrome(std::string line, int aux)
 
 	std::cout << "Biggest value in array: " << biggest_array_value << "\n";
 	std::cout << "Corresponding index: " << biggest_array_value << "\n";
+	std::cout << "Git : " << biggest_array_value << "\n";
 
 //	print (string[c - r : c + r].replace("#",""))
 }
