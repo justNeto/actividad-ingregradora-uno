@@ -49,6 +49,7 @@ void prtHelp()
 	std::cout << ":: < Other opts > :: \n";
 	std::cout << "  -v, --verbose						prints the program specifics in runtime.\n";
 	std::cout << "  -h, --help						shows this help menu and exit.\n";
+	std::cout << "  -l, --logs						generates log for first problem.\n";
 	std::cout << "  --version						displays current version of script.\n";
 }
 
@@ -64,7 +65,7 @@ int main(int argc, char ** argv)
 	std::vector<std::string> gen_files; // create files
 	std::vector<std::string> gen_patterns; // create patterns
 
-	// Opts
+	// Boolean opts
 	bool file_opt = false;
 	bool files_second_opt = false;
 	bool files_third_opt = false;
@@ -72,7 +73,7 @@ int main(int argc, char ** argv)
 	bool gen_file_opt = false;
 	bool gen_pattern_opt = false;
 
-	// Control vars
+	// Boolean control variables
 	bool patterns_inputed = false;
 	bool patterns_generated = false;
 	bool files_generated = false;
@@ -80,7 +81,9 @@ int main(int argc, char ** argv)
 	bool files_second_inputed = false;
 	bool files_third_inputed = false;
 
+	// Boolean extras
 	bool simulation = false; // inputting patterns
+	bool logs = false; // inputting patterns
 
 	// Some defaults
 	int default_text_size = 1000000;
@@ -248,6 +251,13 @@ int main(int argc, char ** argv)
 			continue;
 	      }
 
+	      if ((argv[aux] == std::string("-l")) || (argv[aux] == std::string("--logs"))) // if logs active
+	      {
+			logs = true;
+			aux++;
+			continue;
+	      }
+
 		// Show current version of proyect
 	      if (argv[aux] == std::string ("--version")) // if file options selected
 	      {
@@ -299,7 +309,7 @@ int main(int argc, char ** argv)
 
 		if (verbose) std::cout << "::- Solution for the first problem:\n";
 		// Solution one
-		solutionFirstProblem(files, patterns);
+		solutionFirstProblem(files, patterns, logs);
 
 		if (verbose) std::cout << "::- Solution for the second problem:\n";
 		// Solution two
@@ -538,12 +548,19 @@ int main(int argc, char ** argv)
 	if ((files.size() != 0) && (patterns.size() != 0) && (file_opt) && (pattern_opt)) // if file_opt and pattern_opt selected
 	{
 		// Solve first problem function
-		solutionFirstProblem(files, patterns);
+		solutionFirstProblem(files, patterns, logs);
 	}
-	/* else */
-	/* { */
-	/* 		std::cout << "::-Missing arguments. -pfp or --patterns-first-problem files should also be specified.\n"; */
-	/* } */
+	else if ((files.size() != 0) && patterns.empty())
+	{
+			std::cout << "::-Missing arguments. -pfp or --patterns-first-problem files should also be specified.\n";
+			exit(1);
+	}
+	else if (files.empty() && (patterns.size() != 0)) // if files empty but patterns not
+	{
+			std::cout << "::-Missing arguments. -ffp or --files-first-problem files should also be specified.\n";
+			exit(1);
+	}
+
 
 	if ((files_second.size() != 0) && (files_second_opt)) // if file_opt and pattern_opt selected
 	{
