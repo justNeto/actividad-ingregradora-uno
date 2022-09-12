@@ -235,22 +235,14 @@ int main(int argc, char ** argv)
 	// Code to generate random files
 	if (gen_file_opt)
 	{
-		if (verbose)
+		if (gen_files.empty())
 		{
-			if (gen_files.empty())
-			{
-				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
-			}
-		}
-
-		// After inputing opts process them
-		if (gen_files.size() > 2)
-		{
-			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
 			exit(1);
 		}
 
-		if (gen_files.size() == 1) // if default is only one, then only number of files selected. Thus, using default size.
+		// If default is only one, then only number of files selected. Thus, using default size.
+		if (gen_files.size() == 1)
 		{
 			// Generate all the files with default value
 			if (verbose) std::cout << "Generating " << gen_files[0] << " files.\n";
@@ -279,17 +271,22 @@ int main(int argc, char ** argv)
 				genText(aux2, result);
 			}
 		}
+		// After inputing opts process them
+		if (gen_files.size() > 2)
+		{
+			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			exit(1);
+		}
+
 	}
 
 	// Code to solve the problems with existing files
 	if (file_opt)
 	{
-		if (verbose)
+		if (files.empty())
 		{
-			if (files.empty())
-			{
-				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
-			}
+			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			exit(1);
 		}
 	}
 
@@ -298,22 +295,15 @@ int main(int argc, char ** argv)
 	{
 		std::cout << "Generating patterns\n";
 
-		if (verbose)
+		// If empty then delete the pattern.
+		if (gen_patterns.empty())
 		{
-			if (gen_patterns.empty())
-			{
-				std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
-			}
-		}
-
-		// After inputing opts process them
-		if (gen_patterns.size() > 2)
-		{
-			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
 			exit(1);
 		}
 
-		if (gen_patterns.size() == 1) // if default is only one, then only number of files selected. Thus, using default size.
+		// If default is only one, then only number of files selected. Use default size
+		if (gen_patterns.size() == 1)
 		{
 			// Generate all the files with default value
 			if (verbose) std::cout << "Generating " << gen_patterns[0] << " files.\n";
@@ -327,7 +317,8 @@ int main(int argc, char ** argv)
 			}
 		}
 
-		if (gen_patterns.size() == 2) // if default is only one, then only number of files selected. Thus, using default size.
+		// If default is only one, then only number of files selected. Thus, using default size.
+		if (gen_patterns.size() == 2)
 		{
 			std::cout << "Inside the gen_patterns\n";
 			// Generate all the files with default value
@@ -343,6 +334,14 @@ int main(int argc, char ** argv)
 				genPattern(aux2, result);
 			}
 		}
+
+		// After inputing opts process them
+		if (gen_patterns.size() > 2)
+		{
+			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			exit(1);
+		}
+
 	}
 
 	// Code to solve the problems with existing patterns
