@@ -6,6 +6,16 @@
 #define ARR_SIZE(type) \
 	(sizeof(type) / sizeof (int))
 
+void prtArr(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << "[" << arr[i] << "]";
+	}
+
+	std::cout << "\n";
+}
+
 std::string pre_process(std::string line)
 {
 	// Add $ at the begginning and @ at the end
@@ -22,12 +32,12 @@ std::string pre_process(std::string line)
 	return line;
 }
 
-double minized_values(double val_one, double val_two)
+double minimized_values(double val_one, double val_two)
 {
-	(val_one < val_two) ? val_one : val_two
+	return (val_one < val_two) ? val_one : val_two;
 }
 
-int max_index(t_arr, size)
+int max_index(int t_arr[], int size)
 {
 	int aux = 0;
 
@@ -35,22 +45,27 @@ int max_index(t_arr, size)
 	{
 		if (t_arr[i] > aux)
 		{
-			aux = t_arr;
+			aux = t_arr[i];
 		}
 	}
 
 	return aux;
 }
 
-int getIndex(biggest, t_arr, size)
+int getIndex(int biggest, int t_arr[], int size)
 {
+	int index = 0;
+
 	for (int i = 0; i < size; i++)
 	{
 		if (t_arr[i] == biggest)
 		{
-			return i;
+			index = i;
+			break;
 		}
 	}
+
+	return index;
 }
 
 
@@ -64,36 +79,53 @@ void detectPalindrome(std::string line, int aux)
 	int size = line.length();
 	int t_arr[size] = {0};
 
-	int center, right = 0;
+	std::cout << "| ---- Line value: " << line << " ---- |\n\n";
+
+	int center = 0;
+	int right = 0;
 
 	for (int i = 0; i < size; i++)
 	{
+		std::cout << "| --- i val " << i << " --- |\n";
+
 		int mirror_i = 2*center - i;
-		std::cout << "mirror: " << mirror_i << "\n";
+		std::cout << "Mirror val: " << mirror_i << "\n";
 
 		if (right > i)
 		{
-			t_arr[i] = minimize_values(right - i, t_arr[mirror_i]);
+			t_arr[i] = minimized_values(right - i, t_arr[mirror_i]);
 		}
 		else
 		{
+			std::cout << "Setting value 0 in current index " << i << "\n";
 			t_arr[i] = 0;
 		}
 
-		try
+		while (true)
 		{
-			while (line[i + i + t_arr[i]] == line[i - 1 - t_arr[i]])
+			if ((line[i + i + t_arr[i]] == line[i - 1 - t_arr[i]]))
 			{
+				std::cout << "Still finding mirrors\n";
 				t_arr[i] += 1;
+				continue;
 			}
+			else
+			{
+				std::cout << "Not a mirror found\n";
+				break;
+			}
+
+			break;
 		}
-		catch
-		{
-			;
-		}
+
+		std::cout << "After not founding a mirror.\n";
+		std::cout << "I value: " << i << "\n";
+		std::cout << "t_arr[i] val: " << t_arr[i] << "\n";
+		std::cout << "right: " << right << "\n";
 
 		if (i + t_arr[i] > right)
 		{
+			std::cout << "Changing center mirror\n";
 			center = i;
 			right = i + t_arr[i];
 		}
@@ -102,7 +134,12 @@ void detectPalindrome(std::string line, int aux)
 	int biggest_array_value = max_index(t_arr, size);
 	int bgv_index = getIndex(biggest_array_value, t_arr, size);
 
-	print (string[c - r : c + r].replace("#",""))
+	prtArr(t_arr, size);
+
+	std::cout << "Biggest value in array: " << biggest_array_value << "\n";
+	std::cout << "Corresponding index: " << biggest_array_value << "\n";
+
+//	print (string[c - r : c + r].replace("#",""))
 }
 
 void findPalindromeInFile(std::string file_name)
