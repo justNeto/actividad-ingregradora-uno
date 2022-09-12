@@ -9,7 +9,7 @@ bool verbose;
 // Prints the current development version
 void prtVersion()
 {
-	std::cout << "2.1.0\n";
+	std::cout << "3.2.0\n";
 }
 
 // Prints the help usage of the program
@@ -83,8 +83,8 @@ int main(int argc, char ** argv)
 	bool simulation = false; // inputting patterns
 
 	// Some defaults
-	int default_text_size = 10000;
-	int default_pattern_size = 10;
+	int default_text_size = 1000000;
+	int default_pattern_size = 5;
 
 	if (argc == 1) // no opts passed, program was just executed
 	{
@@ -97,8 +97,6 @@ int main(int argc, char ** argv)
 	// Loop to get the correct opts for the program
 	while (aux != argc)
 	{
-		/* std::cout << "Current Argv[aux]: " <<argv[aux] << ".\n"; */
-
 		if ((file_opt == true) && (files_inputed == false))  // if file_opt active and files_inputed still false
 		{
 			// New opt in argv[aux] detected
@@ -237,7 +235,8 @@ int main(int argc, char ** argv)
 		if ((argv[aux] == std::string("-s")) || (argv[aux] == std::string("--simulate")))
 	      {
 			simulation = true; //automatically ignore any other commands and go straight to simulation
-			aux++;
+			files.clear();
+			patterns.clear();
 			break;
 	      }
 
@@ -274,25 +273,41 @@ int main(int argc, char ** argv)
 		if (verbose) std::cout << "In simulation mode, default values will be used for file length and pattern length.\n";
 		if (verbose) std::cout << "::- Creating files\n";
 
-		// Creating default files
-		genText(100000, "transmission1.txt");
-		genText(100000, "transmission2.txt");
-		genPattern(5, "mcode1.txt");
-		genPattern(5, "mcode2.txt");
-		genPattern(5, "mcode3.txt");
+		// Creating vectors to find solution
+		std::vector<std::string> files_vector;
+		std::vector<std::string> patterns_vector;
 
-		if (verbose) std::cout << "::- Files created\n";
+		// Creating default files
+		genText(default_text_size, "transmission1.txt");
+		genText(default_text_size, "transmission2.txt");
+		genPattern(default_pattern_size, "mcode1.txt");
+		genPattern(default_pattern_size, "mcode2.txt");
+		genPattern(default_pattern_size, "mcode3.txt");
+
+		// Pushing transmission vectors
+		files.push_back("transmission1.txt");
+		files.push_back("transmission2.txt");
+
+		// Pushing mcode patterns
+		patterns.push_back("mcode1.txt");
+		patterns.push_back("mcode2.txt");
+		patterns.push_back("mcode3.txt");
+
+		if (verbose) std::cout << "::- Vectors & files created\n";
 
 		// Once the files are created, the solutions for the three problems will run
 
 		if (verbose) std::cout << "::- Solution for the first problem:\n";
 		// Solution one
+		solutionFirstProblem(files, patterns);
 
 		if (verbose) std::cout << "::- Solution for the second problem:\n";
 		// Solution two
+		solutionSecondProblem(files);
 
 		if (verbose) std::cout << "::- Solution for the third problem:\n";
 		// Solution three
+		solutionThirdProblem(files);
 
 		if (verbose) std::cout << "::- Simulation mode terminated.\n";
 		exit(0);
@@ -373,7 +388,7 @@ int main(int argc, char ** argv)
 				continue;
 			}
 
-			if (verbose) std::cout << "File does exist\n\n";
+			if (verbose) std::cout << "File does exist\n";
 		}
 	}
 
@@ -399,7 +414,7 @@ int main(int argc, char ** argv)
 				exit(0);
 			}
 
-			if (verbose) std::cout << "File does exist\n\n";
+			if (verbose) std::cout << "File does exist\n";
 		}
 	}
 
@@ -470,7 +485,6 @@ int main(int argc, char ** argv)
 		// If default is two, using <N> and <M> options
 		if (gen_patterns.size() == 2)
 		{
-			std::cout << "Inside the gen_patterns\n";
 			// Generate all the files with default value
 			if (verbose) std::cout << "Generating " << gen_patterns[0] << " files of length " << gen_patterns[1] << ".\n"; // number of files
 
@@ -526,6 +540,10 @@ int main(int argc, char ** argv)
 		// Solve first problem function
 		solutionFirstProblem(files, patterns);
 	}
+	/* else */
+	/* { */
+	/* 		std::cout << "::-Missing arguments. -pfp or --patterns-first-problem files should also be specified.\n"; */
+	/* } */
 
 	if ((files_second.size() != 0) && (files_second_opt)) // if file_opt and pattern_opt selected
 	{
