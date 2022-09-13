@@ -178,7 +178,7 @@ void findPalindromeInFile(std::string file_name)
 
 void solutionSecondProblem(std::vector<std::string> files)
 {
-	std::string greetings = "| --- Start searching for largest palindrome --- | \n";
+	std::string greetings = "\n| --- Start searching for largest palindrome --- | \n";
 
 	std::cout << greetings;
 
