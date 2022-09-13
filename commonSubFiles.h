@@ -26,8 +26,7 @@ void convert(std::string file_name)
 
 void convertFileToString(std::vector<std::string> files)
 {
-
-	std::string greetings = "| --- Start searching for largest palindrome --- | \n";
+	std::string greetings = "| --- Converting file to string file --- |\n";
 	std::cout << greetings;
 
 	for (auto &file_name : files) // for file_name in files
