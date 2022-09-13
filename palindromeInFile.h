@@ -172,6 +172,7 @@ void findPalindromeInFile(std::string file_name)
 	}
 
 	KMPSearchNoLogs(longestPalindromeString, palindromeLine, longestPalindromeAux);
+	std::cout << " (with a size of " << longestPalindromeSize << ")\n";
 }
 
 void solutionSecondProblem(std::vector<std::string> files)

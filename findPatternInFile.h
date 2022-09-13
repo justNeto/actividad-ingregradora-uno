@@ -60,7 +60,7 @@ void KMPSearchNoLogs(std::string pattern, std::string str, int row)
 
 		if (j == pattern_length)
   	      {
-			std::string pattern_found = "Pattern " + pattern + " was found at row " + std::to_string(row) + " index " + std::to_string(i-j + 1) + ".\n";
+			std::string pattern_found = "The biggest palindrome's size of " + pattern + " was found at row " + std::to_string(row) + " index " + std::to_string(i-j + 1);
 
 			std::cout << pattern_found;
 
