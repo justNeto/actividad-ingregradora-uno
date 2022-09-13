@@ -1,3 +1,6 @@
+#ifndef FND_PATTERN
+#define FND_PATTERN
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -32,9 +35,56 @@ void gen_lps(std::string pattern, int pattern_length, int lps_arr[])
 	}
 }
 
+void KMPSearchNoLogs(std::string pattern, std::string str, int row)
+{
+      int pattern_length = pattern.length();
+      int str_length = str.length();
+
+      // create lps_arr[] that will hold the longest prefix suffix
+      // values for pattern
+      int lps_arr[pattern_length];
+
+      // Preprocess the pattern (calculate lps_arr[] array)
+      gen_lps(pattern, pattern_length, lps_arr);
+
+      int i = 0; // index for str[]
+      int j = 0; // index for pattern[]
+
+      while ((str_length - i) >= (pattern_length - j))
+      {
+		if (pattern[j] == str[i])
+		{
+			j++;
+                  i++;
+            }
+
+		if (j == pattern_length)
+  	      {
+			std::string pattern_found = "Pattern " + pattern + " was found at row " + std::to_string(row) + " index " + std::to_string(i-j + 1) + ".\n";
+
+			std::cout << pattern_found;
+
+			j = lps_arr[j - 1];
+		}
+
+		// mismatch after j matches
+		else if (i < str_length && pattern[j] != str[i])
+		{
+			if (j != 0)
+			{
+				j = lps_arr[j - 1];
+			}
+			else
+			{
+				i = i + 1;
+			}
+		}
+	}
+}
+
 void KMPSearch(std::string pattern, std::string str, int row, bool logs, std::ofstream& log_file)
 {
-	int pattern_length = pattern.length();
+      int pattern_length = pattern.length();
       int str_length = str.length();
 
       // create lps_arr[] that will hold the longest prefix suffix
@@ -143,3 +193,5 @@ void solutionFirstProblem(std::vector<std::string> files, std::vector<std::strin
 	}
 
 }
+
+#endif

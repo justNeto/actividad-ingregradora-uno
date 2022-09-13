@@ -1,7 +1,9 @@
-#include <iostream>
-#include <fstream>
+#ifndef FND_PALINDROME
+#define FND_PALINDROME
+
+#include "findPatternInFile.h"
 #include <string>
-#include <vector>
+#include <algorithm>
 
 #define ARR_SIZE(type) \
 	(sizeof(type) / sizeof (int))
@@ -18,9 +20,6 @@ void prtArr(int arr[], int size)
 
 std::string pre_process(std::string line)
 {
-	// Add $ at the begginning and @ at the end
-	/* line = "$" + line + "@"; */
-	/* line = line + "#"; */
 
 	for (int i = 0; i < line.length(); i += 2)
 	{
@@ -69,27 +68,21 @@ int getIndex(int biggest, int t_arr[], int size)
 }
 
 
-void detectPalindrome(std::string line, int aux)
+std::vector<std::string> detectPalindrome(std::string line, int aux)
 {
-	// "asd anna asd" case odd
-	// "asd ana asd" case odd
-	/* line = pre_process(line); */
+	std::vector<std::string> ans;
+
 	line = pre_process(line);
 
 	int size = line.length();
 	int t_arr[size] = {0};
-
-	std::cout << "| ---- Line value: " << line << " ---- |\n\n";
 
 	int center = 0;
 	int right = 0;
 
 	for (int i = 0; i < size; i++)
 	{
-		std::cout << "| --- i val " << i << " --- |\n";
-
 		int mirror_i = 2*center - i;
-		std::cout << "Mirror val: " << mirror_i << "\n";
 
 		if (right > i)
 		{
@@ -97,50 +90,57 @@ void detectPalindrome(std::string line, int aux)
 		}
 		else
 		{
-			std::cout << "Setting value 0 in current index " << i << "\n";
+
 			t_arr[i] = 0;
 		}
 
-		while (true)
+		try 
 		{
-			if ((line[i + i + t_arr[i]] == line[i - 1 - t_arr[i]]))
+			while ((line[i + 1 + t_arr[i]] == line[i - 1 - t_arr[i]]))
 			{
-				std::cout << "Still finding mirrors\n";
 				t_arr[i] += 1;
-				continue;
 			}
-			else
-			{
-				std::cout << "Not a mirror found\n";
-				break;
-			}
-
-			break;
+		}
+		catch (...)
+		{
+			;
 		}
 
-		std::cout << "After not founding a mirror.\n";
-		std::cout << "I value: " << i << "\n";
-		std::cout << "t_arr[i] val: " << t_arr[i] << "\n";
-		std::cout << "right: " << right << "\n";
-
-		if (i + t_arr[i] > right)
+		if ((i + t_arr[i]) > right)
 		{
-			std::cout << "Changing center mirror\n";
 			center = i;
 			right = i + t_arr[i];
 		}
 	}
 
-	int biggest_array_value = max_index(t_arr, size);
-	int bgv_index = getIndex(biggest_array_value, t_arr, size);
+	int biggest_array_value = max_index(t_arr, size); // r
+	int bgv_index = getIndex(biggest_array_value, t_arr, size); // c
 
-	prtArr(t_arr, size);
+	// Left side of palindrome
+	int left_side = bgv_index - biggest_array_value;
+	int right_side = bgv_index + biggest_array_value;
 
-	std::cout << "Biggest value in array: " << biggest_array_value << "\n";
-	std::cout << "Corresponding index: " << biggest_array_value << "\n";
-	std::cout << "Git : " << biggest_array_value << "\n";
+	aux = left_side;
 
-//	print (string[c - r : c + r].replace("#",""))
+	std::string result("");
+	
+	while (aux != right_side)
+	{
+		result += line[aux];
+		aux++;
+	}
+
+	std::string init_index = std::to_string(left_side);
+	std::string ending_index = std::to_string(right_side);
+	
+	result.erase(std::remove(result.begin(), result.end(), '#'), result.end());
+
+	ans.push_back(result); // first value of string
+	ans.push_back(init_index); // second init index
+	ans.push_back(ending_index); // third ending index
+
+	return ans;
+
 }
 
 void findPalindromeInFile(std::string file_name)
@@ -156,11 +156,18 @@ void findPalindromeInFile(std::string file_name)
 
 	while (std::getline(infile, line)) // gets a line in line variable
 	{
-		detectPalindrome(line, aux);
-		exit(0);
+		std::vector line_ans = detectPalindrome(line, aux);
+
+		if (line_ans.size() == 3) // beginning, ending, and result strings
+		{
+			if (line_ans[0].size() > 1)
+			{
+				KMPSearchNoLogs(line_ans[0], line, aux);
+			}
+		}
+
 		aux++;
 	}
-
 }
 
 void solutionSecondProblem(std::vector<std::string> files)
@@ -174,3 +181,5 @@ void solutionSecondProblem(std::vector<std::string> files)
 		findPalindromeInFile(file_name); // passes file_name to read
 	}
 }
+
+#endif

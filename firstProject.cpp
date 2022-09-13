@@ -537,7 +537,7 @@ int main(int argc, char ** argv)
 			if(infile.fail())
 			{
 				std::cout << "\n::-Error. Inputted '" << file_name << "' file does not exist.";
-				exit(0);
+				exit(1);
 			}
 
 			if (verbose) std::cout << "Pattern file does exist\n\n";
