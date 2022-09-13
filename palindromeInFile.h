@@ -5,9 +5,6 @@
 #include <string>
 #include <algorithm>
 
-#define ARR_SIZE(type) \
-	(sizeof(type) / sizeof (int))
-
 void prtArr(int arr[], int size)
 {
 	for (int i = 0; i < size; i++)
@@ -68,6 +65,7 @@ int getIndex(int biggest, int t_arr[], int size)
 }
 
 
+/* void detectPalindrome(std::string line, int aux) */
 std::vector<std::string> detectPalindrome(std::string line, int aux)
 {
 	std::vector<std::string> ans;
@@ -94,16 +92,25 @@ std::vector<std::string> detectPalindrome(std::string line, int aux)
 			t_arr[i] = 0;
 		}
 
-		try 
+
+		while (true)
 		{
-			while ((line[i + 1 + t_arr[i]] == line[i - 1 - t_arr[i]]))
+			int left_boundary = i + 1 + t_arr[i];
+			int right_boundary = i - 1 - t_arr[i];
+
+			if ((left_boundary < 0) || (right_boundary < 0) || (left_boundary > size) || (right_boundary > size)) // this means out of bounce
+			{
+				break;
+			}
+
+			if (line[left_boundary] == line[right_boundary])
 			{
 				t_arr[i] += 1;
 			}
-		}
-		catch (...)
-		{
-			;
+			else
+			{
+				break;
+			}
 		}
 
 		if ((i + t_arr[i]) > right)
@@ -123,7 +130,7 @@ std::vector<std::string> detectPalindrome(std::string line, int aux)
 	aux = left_side;
 
 	std::string result("");
-	
+
 	while (aux != right_side)
 	{
 		result += line[aux];
@@ -132,7 +139,7 @@ std::vector<std::string> detectPalindrome(std::string line, int aux)
 
 	std::string init_index = std::to_string(left_side);
 	std::string ending_index = std::to_string(right_side);
-	
+
 	result.erase(std::remove(result.begin(), result.end(), '#'), result.end());
 
 	ans.push_back(result); // first value of string
@@ -146,11 +153,10 @@ std::vector<std::string> detectPalindrome(std::string line, int aux)
 void findPalindromeInFile(std::string file_name)
 {
 	std::ifstream infile(file_name); // read current file with file_name name
-
 	std::string searching = "\n[ Searching palindromes in " + file_name + " ]\n";
 	std::cout << searching;
 
-	std::string line; // line of infile
+	std::string line;
 
 	int aux = 1; // aux variable that represents rows for the file inputed
 

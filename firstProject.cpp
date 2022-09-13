@@ -1,3 +1,6 @@
+#ifndef FIRST_PROJECT
+#define FIRST_PROJECT
+
 #include "genTxtFiles.h"
 #include "findPatternInFile.h" // solution first problem
 #include "palindromeInFile.h" // solution second problem
@@ -574,3 +577,5 @@ int main(int argc, char ** argv)
 		solutionThirdProblem(files_third);
 	}
 }
+
+#endif
