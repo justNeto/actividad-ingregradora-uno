@@ -564,16 +564,15 @@ int main(int argc, char ** argv)
 			exit(1);
 	}
 
-
 	if ((files_second.size() != 0) && (files_second_opt)) // if file_opt and pattern_opt selected
 	{
-		// Solve first problem function
+		// Solve second problem function
 		solutionSecondProblem(files_second);
 	}
 
 	if ((files_third.size() != 0) && (files_third_opt)) // if file_opt and pattern_opt selected
 	{
-		// Solve first problem function
+		// Solve third problem function
 		solutionThirdProblem(files_third);
 	}
 }

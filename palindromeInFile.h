@@ -4,6 +4,7 @@
 #include "findPatternInFile.h"
 #include <string>
 #include <algorithm>
+
 void prtArr(int arr[], int size) {
 	for (int i = 0; i < size; i++)
 	{
@@ -177,7 +178,7 @@ void findPalindromeInFile(std::string file_name)
 
 void solutionSecondProblem(std::vector<std::string> files)
 {
-	std::string greetings = "| --- Start searching for palindromes --- | \n";
+	std::string greetings = "| --- Start searching for largest palindrome --- | \n";
 
 	std::cout << greetings;
 
