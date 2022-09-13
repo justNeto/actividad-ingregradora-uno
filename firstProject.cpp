@@ -18,7 +18,7 @@ void prtVersion()
 // Prints the help usage of the program
 void prtHelp()
 {
-	std::cout << "Usage: firstProject [OPTIONS] ... [FILE] ... \n\n";
+	std::cout << "Usage: runProject [OPTIONS] ... [FILE] ... \n\n";
 
 	std::cout << "Use the following options for generating test random files and patterns.\n\n";
 	std::cout << "  -gf, --generate-files <N> <M>\n";

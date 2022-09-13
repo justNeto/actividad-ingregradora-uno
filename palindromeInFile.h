@@ -4,9 +4,7 @@
 #include "findPatternInFile.h"
 #include <string>
 #include <algorithm>
-
-void prtArr(int arr[], int size)
-{
+void prtArr(int arr[], int size) {
 	for (int i = 0; i < size; i++)
 	{
 		std::cout << "[" << arr[i] << "]";
@@ -66,7 +64,7 @@ int getIndex(int biggest, int t_arr[], int size)
 
 
 /* void detectPalindrome(std::string line, int aux) */
-std::vector<std::string> detectPalindrome(std::string line, int aux)
+std::string detectPalindrome(std::string line, int aux)
 {
 	std::vector<std::string> ans;
 
@@ -137,16 +135,9 @@ std::vector<std::string> detectPalindrome(std::string line, int aux)
 		aux++;
 	}
 
-	std::string init_index = std::to_string(left_side);
-	std::string ending_index = std::to_string(right_side);
-
 	result.erase(std::remove(result.begin(), result.end(), '#'), result.end());
 
-	ans.push_back(result); // first value of string
-	ans.push_back(init_index); // second init index
-	ans.push_back(ending_index); // third ending index
-
-	return ans;
+	return result;
 
 }
 
@@ -158,22 +149,29 @@ void findPalindromeInFile(std::string file_name)
 
 	std::string line;
 
+	int longestPalindromeSize = 0;
+	std::string longestPalindromeString;
+	std::string palindromeLine;
+
 	int aux = 1; // aux variable that represents rows for the file inputed
+	int longestPalindromeAux;
 
 	while (std::getline(infile, line)) // gets a line in line variable
 	{
-		std::vector<std::string> line_ans = detectPalindrome(line, aux);
+		std::string currPalindrome = detectPalindrome(line, aux);
 
-		if (line_ans.size() == 3) // beginning, ending, and result strings
+		if (currPalindrome.length() > longestPalindromeSize)
 		{
-			if (line_ans[0].size() > 1)
-			{
-				KMPSearchNoLogs(line_ans[0], line, aux);
-			}
+			longestPalindromeString = currPalindrome;
+			longestPalindromeSize = currPalindrome.length();
+			palindromeLine = line;
+			longestPalindromeAux = aux;
 		}
 
 		aux++;
 	}
+
+	KMPSearchNoLogs(longestPalindromeString, palindromeLine, longestPalindromeAux);
 }
 
 void solutionSecondProblem(std::vector<std::string> files)
