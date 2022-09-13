@@ -120,7 +120,7 @@ void findLargestSubstr(std::string file_one, std::string file_two)
 void solutionThirdProblem(std::vector<std::string> files)
 {
 
-	std::string greetings = "| --- Start searching for largest substring between files --- | \n";
+	std::string greetings = "\n| --- Start searching for largest substring between files --- | \n\n";
 
 	std::cout << greetings;
 
