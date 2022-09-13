@@ -16,9 +16,10 @@ void prtVersion()
 }
 
 // Prints the help usage of the program
-void prtHelp()
+void prtHelp(std::string name)
 {
-	std::cout << "Usage: runProject [OPTIONS] ... [FILE] ... \n\n";
+	/* std::cout << "Usage: runProject [OPTIONS] ... [FILE] ... \n\n"; */
+	std::cout << "Usage: " << name << " [OPTIONS] ... [FILE] ... \n\n";
 
 	std::cout << "Use the following options for generating test random files and patterns.\n\n";
 	std::cout << "  -gf, --generate-files <N> <M>\n";
@@ -64,6 +65,8 @@ void prtHelp()
 // Argv: the vector in char ** format
 int main(int argc, char ** argv)
 {
+	std::string binary_name = argv[0];
+
 	// Vectors to save the names of the files and patterns the program will later use
 	std::vector<std::string> files; // existing files
 	std::vector<std::string> files_second; // existing files
@@ -101,7 +104,7 @@ int main(int argc, char ** argv)
 
 	if (argc == 1) // no opts passed, program was just executed
 	{
-		prtHelp();
+		prtHelp(binary_name);
 		exit(1);
 	}
 
@@ -300,12 +303,13 @@ int main(int argc, char ** argv)
 
 	      if ((argv[aux] == std::string ("-h")) || (argv[aux] == std::string("--help"))) // if file options selected
 	      {
-			prtHelp();
+			prtHelp(binary_name);
 			exit(0);
 	      }
 
 	      // If not entering a file then some erros has been made
-	      std::cout << "Invalid option. Try findPattern -h or findPattern --help for more information.\n";
+	      std::cout << "Invalid option. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
+	      /* std::cout << "Invalid option. Try findPattern -h or findPattern --help for more information.\n"; */
 		exit(1);
 	}
 
@@ -363,7 +367,7 @@ int main(int argc, char ** argv)
 
 		if (gen_files.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -401,7 +405,7 @@ int main(int argc, char ** argv)
 		// After inputing opts process them
 		if (gen_files.size() > 2)
 		{
-			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Invalid arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -412,7 +416,7 @@ int main(int argc, char ** argv)
 	{
 		if (files.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -465,7 +469,7 @@ int main(int argc, char ** argv)
 	{
 		if ((files_third.empty()) || (files_third.size() == 1))
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -513,7 +517,7 @@ int main(int argc, char ** argv)
 		// If empty then delete the pattern.
 		if (gen_patterns.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -563,7 +567,7 @@ int main(int argc, char ** argv)
 	{
 		if (patterns.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 

@@ -1,15 +1,21 @@
-# Partial project
+# Entregable #1
+
+Alumno: Luis Ernesto Ladrón de Guevara González - A01654419
+
+Considero innecesario agregar un teams.txt porque hice solo el proyecto.
 
 ## Usage
-The solution binary uses previously generated files by adding them after the program or generates them at the moment by using the -s , --simulation flags:
+Todo lo base lo corre la opción -s del binario. Sin embargo, si gusta consultar las opciones corriendo el programa con la bandera -h o --help, o solamente corriendo el binario sin opciones, es libre de checar lo que le agregue como funcionalidad extra. El codigo esta mayormente documentado igual, pero no tenga miedo de preguntarme.
+
 
 ```
-# Using previously generated files
-runProject -f file1 file2 file3 -p pattern1 pattern2
-
-# Generating them at the moment. If transmission1.txt, transmission2.txt, transmission3.txt, mcode1.txt, mcode2.txt file exist in directory they will be overwritten.
+# Consultar opciones
 runProject -s
 ```
 
 BUGS:
-When I tested it, could not name project binary the same as firstProject.
+Cuando lo probe, por alguna razon en mi sistema linux no pude nombrar el archivo con el mismo nombre base del programa cpp. Por favor, cambiar el nombre a runProject:
+```
+g++ firstProject.cpp -o runProject.
+```
+Run project es el nombre que viene por defecto en la documentación.
