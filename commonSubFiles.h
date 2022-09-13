@@ -5,6 +5,37 @@
 #include <fstream>
 #include <vector>
 
+void convert(std::string file_name)
+{
+	std::ifstream infile(file_name); // read current file to convert
+	std::string string_file; // string with all data from file one
+	std::string aux_file;
+
+	while (getline(infile, aux_file))
+	{
+		string_file += aux_file;
+	}
+
+	std::ofstream file_converted;
+	std::string new_name = file_name + "_toString";
+
+	file_converted.open(new_name);
+	file_converted << string_file;
+	file_converted.close();
+}
+
+void convertFileToString(std::vector<std::string> files)
+{
+
+	std::string greetings = "| --- Start searching for largest palindrome --- | \n";
+	std::cout << greetings;
+
+	for (auto &file_name : files) // for file_name in files
+	{
+		convert(file_name); // passes file_name to read
+	}
+}
+
 // Reference https://www.geeksforgeeks.org/longest-common-substring-dp-29/
 // No fui a la clase, entonces probe varias cosas y finalmente encontre una forma recursiva de plantearlo
 std::string lcs(std::string string_one, std::string string_two)
@@ -56,10 +87,7 @@ std::string lcs(std::string string_one, std::string string_two)
 		std::string non = "There is not a common largest substring between these two files\n";
 	}
 
-	std::cout << "End: " << end << "\n";
-	std::cout << "Result: " << result << "\n";
-
-	std::string string_to_return = "The largest common substring between these two files is " + string_one.substr(end - result + 1, result) + ". Starting from " + std::to_string(end-result) + " to " + std::to_string(end) + " in the first file string.\n";
+	std::string string_to_return = "The largest common substring between these two files is " + string_one.substr(end - result + 1, result) + ". Starting from " + std::to_string(end-result) + " to " + std::to_string(end) + " in the first file string. Can be checked by running option -cfs <FILE>. Consult --help or -h for more information.\n";
 
 	return string_to_return;
 }
@@ -99,9 +127,6 @@ void solutionThirdProblem(std::vector<std::string> files)
 
 	std::string file_one = files[0];
 	std::string file_two = files[1];
-
-	std::cout << "File one: " << file_one << "\n";
-	std::cout << "File two: " << file_two << "\n";
 
 	findLargestSubstr(file_one, file_two); // passes file_name to read
 }

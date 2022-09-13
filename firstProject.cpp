@@ -28,6 +28,10 @@ void prtHelp()
 	std::cout << "       Generate a number of <N> random patterns with a length of <M>. They will be automatically as mcode<0...N>.\n";
 	std::cout << "       If no <M> value selected, default file size of length 10 will be used.\n\n";
 
+	std::cout << "Use the following options for converting a file to a single string file.\n\n";
+	std::cout << "  -cfs, --convert-file-string FILE1, FILE2, ...\n";
+	std::cout << "       Converts a file to a string file with the name FILE_toString.\n\n";
+
 	std::cout << ":: < First problem > :: \n";
 	std::cout << "Use the following options for searching patterns in files.\n";
 	std::cout << "  -ffp, --files-first-problem FILE1, FILE2 ...\n";
@@ -67,6 +71,7 @@ int main(int argc, char ** argv)
 	std::vector<std::string> patterns; // existing patterns
 	std::vector<std::string> gen_files; // create files
 	std::vector<std::string> gen_patterns; // create patterns
+	std::vector<std::string> convert_files; // create convert files
 
 	// Boolean opts
 	bool file_opt = false;
@@ -75,6 +80,7 @@ int main(int argc, char ** argv)
 	bool pattern_opt = false;
 	bool gen_file_opt = false;
 	bool gen_pattern_opt = false;
+	bool convert_str_opt = false;
 
 	// Boolean control variables
 	bool patterns_inputed = false;
@@ -83,6 +89,7 @@ int main(int argc, char ** argv)
 	bool files_inputed = false;
 	bool files_second_inputed = false;
 	bool files_third_inputed = false;
+	bool convert_inputed = false;
 
 	// Boolean extras
 	bool simulation = false; // inputting patterns
@@ -190,6 +197,21 @@ int main(int argc, char ** argv)
 			continue;
 		}
 
+		if ((convert_str_opt == true) && (convert_inputed == false))  // if file_opt active and files_inputed still false
+		{
+			// New opt in argv[aux] detected
+			if (argv[aux][0] == '-')
+			{
+				convert_inputed = true; // can no longer add into this opt
+				continue;
+			}
+
+			convert_files.push_back(argv[aux]);
+			aux++;
+
+			continue;
+		}
+
 		// Generate new files of random characters
 		if ((argv[aux] == std::string("-gf")) || (argv[aux] == std::string("--generate-files")))
 	      {
@@ -202,6 +224,14 @@ int main(int argc, char ** argv)
 		if ((argv[aux] == std::string("-gp")) || (argv[aux] == std::string("--generate-patterns")))
 	      {
 			gen_pattern_opt = true; // selects the option to work with
+			aux++;
+			continue;
+	      }
+
+		// Convert to string a file
+		if ((argv[aux] == std::string("-cfs")) || (argv[aux] == std::string("--convert-file-string")))
+	      {
+			convert_str_opt = true; // selects the option to work with
 			aux++;
 			continue;
 	      }
@@ -466,6 +496,13 @@ int main(int argc, char ** argv)
 			exit(0);
 		}
 
+	}
+
+	if (convert_str_opt)
+	{
+		if (verbose) std::cout << "Converting file to single string file.\n";
+
+		convertFileToString(convert_files);
 	}
 
 	// Code to generate random patterns
