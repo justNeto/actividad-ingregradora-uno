@@ -156,7 +156,7 @@ void findPalindromeInFile(std::string file_name)
 
 	while (std::getline(infile, line)) // gets a line in line variable
 	{
-		std::vector line_ans = detectPalindrome(line, aux);
+		std::vector<std::string> line_ans = detectPalindrome(line, aux);
 
 		if (line_ans.size() == 3) // beginning, ending, and result strings
 		{
