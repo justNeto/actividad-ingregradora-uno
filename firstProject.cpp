@@ -1,3 +1,6 @@
+#ifndef FIRST_PROJECT
+#define FIRST_PROJECT
+
 #include "genTxtFiles.h"
 #include "findPatternInFile.h" // solution first problem
 #include "palindromeInFile.h" // solution second problem
@@ -13,9 +16,10 @@ void prtVersion()
 }
 
 // Prints the help usage of the program
-void prtHelp()
+void prtHelp(std::string name)
 {
-	std::cout << "Usage: firstProject [OPTIONS] ... [FILE] ... \n\n";
+	/* std::cout << "Usage: runProject [OPTIONS] ... [FILE] ... \n\n"; */
+	std::cout << "Usage: " << name << " [OPTIONS] ... [FILE] ... \n\n";
 
 	std::cout << "Use the following options for generating test random files and patterns.\n\n";
 	std::cout << "  -gf, --generate-files <N> <M>\n";
@@ -24,6 +28,10 @@ void prtHelp()
 	std::cout << "  -gp, --generate-patterns <N> <M>\n";
 	std::cout << "       Generate a number of <N> random patterns with a length of <M>. They will be automatically as mcode<0...N>.\n";
 	std::cout << "       If no <M> value selected, default file size of length 10 will be used.\n\n";
+
+	std::cout << "Use the following options for converting a file to a single string file.\n\n";
+	std::cout << "  -cfs, --convert-file-string FILE1, FILE2, ...\n";
+	std::cout << "       Converts a file to a string file with the name FILE_toString.\n\n";
 
 	std::cout << ":: < First problem > :: \n";
 	std::cout << "Use the following options for searching patterns in files.\n";
@@ -57,6 +65,8 @@ void prtHelp()
 // Argv: the vector in char ** format
 int main(int argc, char ** argv)
 {
+	std::string binary_name = argv[0];
+
 	// Vectors to save the names of the files and patterns the program will later use
 	std::vector<std::string> files; // existing files
 	std::vector<std::string> files_second; // existing files
@@ -64,6 +74,7 @@ int main(int argc, char ** argv)
 	std::vector<std::string> patterns; // existing patterns
 	std::vector<std::string> gen_files; // create files
 	std::vector<std::string> gen_patterns; // create patterns
+	std::vector<std::string> convert_files; // create convert files
 
 	// Boolean opts
 	bool file_opt = false;
@@ -72,6 +83,7 @@ int main(int argc, char ** argv)
 	bool pattern_opt = false;
 	bool gen_file_opt = false;
 	bool gen_pattern_opt = false;
+	bool convert_str_opt = false;
 
 	// Boolean control variables
 	bool patterns_inputed = false;
@@ -80,18 +92,19 @@ int main(int argc, char ** argv)
 	bool files_inputed = false;
 	bool files_second_inputed = false;
 	bool files_third_inputed = false;
+	bool convert_inputed = false;
 
 	// Boolean extras
 	bool simulation = false; // inputting patterns
 	bool logs = false; // inputting patterns
 
 	// Some defaults
-	int default_text_size = 1000000;
+	int default_text_size = 10000;
 	int default_pattern_size = 5;
 
 	if (argc == 1) // no opts passed, program was just executed
 	{
-		prtHelp();
+		prtHelp(binary_name);
 		exit(1);
 	}
 
@@ -187,6 +200,21 @@ int main(int argc, char ** argv)
 			continue;
 		}
 
+		if ((convert_str_opt == true) && (convert_inputed == false))  // if file_opt active and files_inputed still false
+		{
+			// New opt in argv[aux] detected
+			if (argv[aux][0] == '-')
+			{
+				convert_inputed = true; // can no longer add into this opt
+				continue;
+			}
+
+			convert_files.push_back(argv[aux]);
+			aux++;
+
+			continue;
+		}
+
 		// Generate new files of random characters
 		if ((argv[aux] == std::string("-gf")) || (argv[aux] == std::string("--generate-files")))
 	      {
@@ -199,6 +227,14 @@ int main(int argc, char ** argv)
 		if ((argv[aux] == std::string("-gp")) || (argv[aux] == std::string("--generate-patterns")))
 	      {
 			gen_pattern_opt = true; // selects the option to work with
+			aux++;
+			continue;
+	      }
+
+		// Convert to string a file
+		if ((argv[aux] == std::string("-cfs")) || (argv[aux] == std::string("--convert-file-string")))
+	      {
+			convert_str_opt = true; // selects the option to work with
 			aux++;
 			continue;
 	      }
@@ -267,12 +303,13 @@ int main(int argc, char ** argv)
 
 	      if ((argv[aux] == std::string ("-h")) || (argv[aux] == std::string("--help"))) // if file options selected
 	      {
-			prtHelp();
+			prtHelp(binary_name);
 			exit(0);
 	      }
 
 	      // If not entering a file then some erros has been made
-	      std::cout << "Invalid option. Try findPattern -h or findPattern --help for more information.\n";
+	      std::cout << "Invalid option. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
+	      /* std::cout << "Invalid option. Try findPattern -h or findPattern --help for more information.\n"; */
 		exit(1);
 	}
 
@@ -330,7 +367,7 @@ int main(int argc, char ** argv)
 
 		if (gen_files.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -368,7 +405,7 @@ int main(int argc, char ** argv)
 		// After inputing opts process them
 		if (gen_files.size() > 2)
 		{
-			std::cout << "\n::- Invalid syntax. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Invalid arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -379,7 +416,7 @@ int main(int argc, char ** argv)
 	{
 		if (files.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -432,7 +469,7 @@ int main(int argc, char ** argv)
 	{
 		if ((files_third.empty()) || (files_third.size() == 1))
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -465,6 +502,13 @@ int main(int argc, char ** argv)
 
 	}
 
+	if (convert_str_opt)
+	{
+		if (verbose) std::cout << "Converting file to single string file.\n";
+
+		convertFileToString(convert_files);
+	}
+
 	// Code to generate random patterns
 	if (gen_pattern_opt)
 	{
@@ -473,7 +517,7 @@ int main(int argc, char ** argv)
 		// If empty then delete the pattern.
 		if (gen_patterns.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -523,7 +567,7 @@ int main(int argc, char ** argv)
 	{
 		if (patterns.empty())
 		{
-			std::cout << "\n::-Missing arguments. Try findPattern -h or findPattern --help for more information. \n";
+			std::cout << "\n::- Missing arguments. Try " << binary_name << " -h or " << binary_name << " --help for more information.\n";
 			exit(1);
 		}
 
@@ -537,7 +581,7 @@ int main(int argc, char ** argv)
 			if(infile.fail())
 			{
 				std::cout << "\n::-Error. Inputted '" << file_name << "' file does not exist.";
-				exit(0);
+				exit(1);
 			}
 
 			if (verbose) std::cout << "Pattern file does exist\n\n";
@@ -561,16 +605,17 @@ int main(int argc, char ** argv)
 			exit(1);
 	}
 
-
 	if ((files_second.size() != 0) && (files_second_opt)) // if file_opt and pattern_opt selected
 	{
-		// Solve first problem function
+		// Solve second problem function
 		solutionSecondProblem(files_second);
 	}
 
 	if ((files_third.size() != 0) && (files_third_opt)) // if file_opt and pattern_opt selected
 	{
-		// Solve first problem function
+		// Solve third problem function
 		solutionThirdProblem(files_third);
 	}
 }
+
+#endif
