@@ -99,7 +99,7 @@ int main(int argc, char ** argv)
 	bool logs = false; // inputting patterns
 
 	// Some defaults
-	int default_text_size = 1000000;
+	int default_text_size = 10000;
 	int default_pattern_size = 5;
 
 	if (argc == 1) // no opts passed, program was just executed
